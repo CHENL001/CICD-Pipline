@@ -15,6 +15,11 @@ jobs:
             unzip terraform_0.15.5_linux_amd64.zip
             sudo mv terraform /usr/local/bin/
 
+      # Create .aws directory
+      - run:
+          name: Create .aws directory
+          command: mkdir -p ~/.aws
+
       # Authenticate with AWS
       - run:
           name: Configure AWS credentials
