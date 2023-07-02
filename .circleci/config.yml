@@ -18,12 +18,12 @@ jobs:
           name: Create EC2 instance
           command: |
             aws ec2 run-instances \
-              --image-id <02d8bad0a1da4b6fd> \
-              --instance-type <t2.micro> \
-              --key-name <Terraform+CircleCI> \
-              --subnet-id <0d89314d9d51a59f6> \
-              --security-group-ids <0b25e13fabbf50604> \
-              --region <us-west-2> \
+              --image-id "02d8bad0a1da4b6fd" \
+              --instance-type "t2.micro" \
+              --key-name "Terraform+CircleCI" \
+              --subnet-id "0d89314d9d51a59f6" \
+              --security-group-ids "0b25e13fabbf50604" \
+              --region "us-west-2" \
               --tag-specifications "ResourceType=instance,Tags=[{Key=sai,Value=ec2in}]"
               
 workflows:
