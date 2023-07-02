@@ -1,0 +1,13 @@
+version: 2.1
+
+jobs:
+  build:
+    steps:
+      - checkout
+      - run: terraform init
+      - run: terraform apply
+
+deploy:
+    depends_on: build
+    steps:
+      - run: echo "Deploying infrastructure..."
