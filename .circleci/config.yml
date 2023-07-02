@@ -1,13 +1,39 @@
 version: 2.1
-
 jobs:
   build:
+    docker:
+      - image: circleci/python:3.8
+
     steps:
       - checkout
-      - run: terraform init
-      - run: terraform apply
 
-deploy:
-    depends_on: build
-    steps:
-      - run: echo "Deploying infrastructure..."
+      # Install Terraform
+      - run:
+          name: Install Terraform
+          command: |
+            curl -LO https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip
+            unzip terraform_0.15.5_linux_amd64.zip
+            sudo mv terraform /usr/local/bin/
+
+      # Authenticate with AWS
+      - run:
+          name: Configure AWS credentials
+          command: |
+            echo -e "[default]\naws_access_key_id=$AWS_ACCESS_KEY_ID\naws_secret_access_key=$AWS_SECRET_ACCESS_KEY" > ~/.aws/credentials
+            echo -e "[default]\nregion=$AWS_DEFAULT_REGION" > ~/.aws/config
+
+      # Validate Terraform configuration
+      - run:
+          name: Validate Terraform configuration
+          command: terraform validate
+
+      # Apply Terraform changes
+      - run:
+          name: Apply Terraform changes
+          command: terraform apply -auto-approve
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
