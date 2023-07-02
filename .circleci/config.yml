@@ -2,11 +2,12 @@ version: 2.1
 jobs:
   build:
     docker:
-      image: circleci/node:14
+      - circleci/node:14
     steps:
       - checkout
       - run:
-          name: Create EC2 instance
+          name: Run tests
           command: |
-            terraform init
-            terraform apply
+            npm install
+            npm test
+
