@@ -42,13 +42,13 @@ jobs:
           name: Apply Terraform changes
           command: terraform apply -auto-approve
 
+      # Set GitHub token environment variable
+      - run:
+          name: Set GitHub token environment variable
+          command: echo "export GITHUB_TOKEN=$GITHUB_TOKEN" >> $BASH_ENV && source $BASH_ENV
+
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build
-
-# Set GitHub token environment variable
-- run:
-    name: Set GitHub token environment variable
-    command: echo "export GITHUB_TOKEN=$GITHUB_TOKEN" >> $BASH_ENV && source $BASH_ENV
