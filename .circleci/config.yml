@@ -2,16 +2,32 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:14
+      - image: circleci/python:3.8
 
     steps:
-      - checkout
+      # ... other steps ...
 
-      # Rest of the steps...
+      # Install AWS CLI
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo pip install awscli
 
+      # Create EC2 instance
+      - run:
+          name: Create EC2 instance
+          command: |
+            aws ec2 run-instances \
+              --image-id <ami-02d8bad0a1da4b6fd> \
+              --instance-type <t2.micro> \
+              --key-name <Terraform+CircleCI> \
+              --subnet-id <subnet-0d89314d9d51a59f6> \
+              --security-group-ids <sg-0b25e13fabbf50604> \
+              --region <us-west-2> \
+              --tag-specifications "ResourceType=instance,Tags=[{Key=sai,Value=ec2in}]"
+              
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build
-
